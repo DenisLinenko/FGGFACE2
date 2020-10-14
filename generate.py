@@ -12,9 +12,6 @@ import numpy as np
 import io
 import json
 
-# create a vggface model
-model = VGGFace(model='resnet50', include_top=False, input_shape=(224, 224, 3), pooling='avg')
-
 
 # extract a single face from a given photograph
 def extract_face(filename, required_size=(224, 224)):
@@ -24,7 +21,16 @@ def extract_face(filename, required_size=(224, 224)):
 	detector = MTCNN()
 	# detect faces in the image
 	results = detector.detect_faces(pixels)
-	# extract the bounding box from the first face
+
+	print(len(results), 'faces have been found')
+
+	#--------------------------- detecting the number of faces ------------------------------------
+	if len(results) == 0 :
+		raise Exception('No faces detected')
+	elif len(results) > 1:
+		raise Exception('Multiple faces detected')		
+
+		# extract the bounding box from the first face
 	x1, y1, width, height = results[0]['box']
 	x2, y2 = x1 + width, y1 + height
 	# extract the face
@@ -33,7 +39,11 @@ def extract_face(filename, required_size=(224, 224)):
 	image = Image.fromarray(face)
 	image = image.resize(required_size)
 	face_array = asarray(image)
+	
+
 	return face_array
+
+	
 
 # extract faces and calculate face embeddings for a list of photo files
 def get_embeddings(filenames):
@@ -44,27 +54,34 @@ def get_embeddings(filenames):
 	# prepare the face for the model, e.g. center pixels
 	samples = preprocess_input(samples, version=2)
 	
+	
+	# create predication model - note that we have several option here
+	model = VGGFace(model='resnet50', include_top=False, input_shape=(224, 224, 3), pooling='avg')
 	# perform prediction
 	yhat = model.predict(samples)
 
 	return yhat
 
 # define filenames
-t1_start = perf_counter()
+# t1_start = perf_counter()
 
-filenames = [sys.argv[1]]
-embeddings = get_embeddings(filenames)
-vector = embeddings[0]
+try:
+	
+	embeddings = get_embeddings([sys.argv[1]])
+	
+	vector = embeddings[0]
 
-# serializing vector to string and saving to file
+	# serializing vector to string and saving to file
 
-memfile = io.BytesIO()
-np.save(memfile, vector)
-memfile.seek(0)
+	memfile = io.BytesIO()
+	np.save(memfile, vector)
+	memfile.seek(0)
 
-serialized = json.dumps(memfile.read().decode('latin-1'))
+	serialized = json.dumps(memfile.read().decode('latin-1'))
 
-# writing file (we can  keen this info in DB as well)
-file = open(sys.argv[1]+'_vector', "w")
-n = file.write(serialized)
-file.close()
+	# writing file (we can  keen this info in DB as well)
+	file = open(sys.argv[1]+'_vector', "w")
+	n = file.write(serialized)
+	file.close()
+except Exception as err:
+	print('Unable to generate vector, due to: ', err)
