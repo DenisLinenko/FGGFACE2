@@ -22,15 +22,17 @@ def extract_face(filename, required_size=(224, 224)):
 	# detect faces in the image
 	results = detector.detect_faces(pixels)
 
+	print(results)
+
 	print(len(results), 'faces have been found')
 
 	#--------------------------- detecting the number of faces ------------------------------------
-	if len(results) == 0 :
+	if len(results) == 0:
 		raise Exception('No faces detected')
 	elif len(results) > 1:
 		raise Exception('Multiple faces detected')		
 
-		# extract the bounding box from the first face
+	# extract the bounding box from the first face
 	x1, y1, width, height = results[0]['box']
 	x2, y2 = x1 + width, y1 + height
 	# extract the face
@@ -39,7 +41,6 @@ def extract_face(filename, required_size=(224, 224)):
 	image = Image.fromarray(face)
 	image = image.resize(required_size)
 	face_array = asarray(image)
-	
 
 	return face_array
 
@@ -55,7 +56,7 @@ def get_embeddings(filenames):
 	samples = preprocess_input(samples, version=2)
 	
 	
-	# create predication model - note that we have several option here
+	# create predication model - note that we have several 
 	model = VGGFace(model='resnet50', include_top=False, input_shape=(224, 224, 3), pooling='avg')
 	# perform prediction
 	yhat = model.predict(samples)

@@ -20,10 +20,20 @@ def is_match(known_embedding, candidate_embedding, thresh=0.5):
 	else:
 		print('>face is NOT a Match (%.3f > %.3f)' % (score, thresh))
 
-
 print('comparing', sys.argv[1], sys.argv[2])
 
 embedding1 = getEmbedding(sys.argv[1])
 embedding2 = getEmbedding(sys.argv[2])
 
 is_match(embedding1, embedding2)
+
+#METHOD DEFINITION
+def euc_dist(known_embedding, candidate_embedding):
+    dist = np.linalg.norm(known_embedding - candidate_embedding)
+    print("result in euc_dist =", dist)
+known_embedding = getEmbedding(sys.argv[1])
+candidate_embedding = getEmbedding(sys.argv[2])
+
+
+#METHOD INVOKE
+euc_dist(known_embedding, candidate_embedding)
