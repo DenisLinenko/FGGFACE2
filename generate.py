@@ -22,7 +22,7 @@ def extract_face(filename, required_size=(224, 224)):
 	# detect faces in the image
 	results = detector.detect_faces(pixels)
 
-	print(results)
+	print("-------results----------->", results)
 
 	print(len(results), 'faces have been found')
 
