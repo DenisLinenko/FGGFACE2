@@ -3,6 +3,7 @@ import json
 import io
 import numpy as np
 from scipy.spatial.distance import cosine
+import math
 
 
 def getEmbedding(filename):
@@ -19,10 +20,10 @@ embedding2 = getEmbedding(sys.argv[2])
 def is_match(known_embedding, candidate_embedding, thresh=0.5):
 	# calculate distance between embeddings
 	score = cosine(known_embedding, candidate_embedding)
-	if score <= thresh:
-		print('>face is a Match (%.3f <= %.3f)' % (score, thresh))
+	if score <= thresh:	
+		print('>face is a Match (%.3f <= %.3f) = %.0f' % (score, thresh, math.floor((1-score)*100)), "%")
 	else:
-		print('>face is NOT a Match (%.3f > %.3f)' % (score, thresh))
+		print('>face is NOT a Match (%.3f <= %.3f) = %.0f' % (score, thresh, math.floor((1-score)*100)), "%")
 
 #METHOD DEFINITION
 def euc_dist(known_embedding, candidate_embedding):
