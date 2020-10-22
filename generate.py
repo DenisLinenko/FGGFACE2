@@ -11,9 +11,9 @@ import sys
 import numpy as np
 import io
 import json
+import tensorflow as tf
 
-
-# extract a single face from a given photograph
+	# extract a single face from a given photograph
 def extract_face(filename, required_size=(224, 224)):
 	# load image from file
 	pixels = pyplot.imread(filename)
@@ -44,8 +44,6 @@ def extract_face(filename, required_size=(224, 224)):
 
 	return face_array
 
-	
-
 # extract faces and calculate face embeddings for a list of photo files
 def get_embeddings(filenames):
 	# extract faces
@@ -55,16 +53,11 @@ def get_embeddings(filenames):
 	# prepare the face for the model, e.g. center pixels
 	samples = preprocess_input(samples, version=2)
 	
-	
-	# create predication model - note that we have several 
 	model = VGGFace(model='resnet50', include_top=False, input_shape=(224, 224, 3), pooling='avg')
+
 	# perform prediction
 	yhat = model.predict(samples)
-
 	return yhat
-
-# define filenames
-# t1_start = perf_counter()
 
 try:
 	
