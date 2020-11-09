@@ -1,0 +1,14 @@
+{
+    'Distance' : ['Denis_Normal','Denis_FAR'], 
+    'Lighting1' : ['Denis_Normal','Denis_Bright'],
+    'Lighting2' : ['Denis_Normal','Denis_Dim_Lighting'], 
+    'Age' : ['Brad_young','Brad_old'], 
+    'Ethnicity1' : ['Jackie_chan_known', 'Jackie_chan_test1'], 
+    'Ethnicity2' : ['Barack_Obama_Known','Barack_Obama_test'], 
+    'Occlusion1' : ['Woman_Normal','Woman_Mask'],
+    'Occlusion2' : ['Rana_Normal', 'Rana_Sunglass'], 
+    'Occlusion3' : ['Rana_Normal', 'Rana_Multiple_Occlusion'],
+    'Rana' : ['Rana_PM', 'Rana_False'],
+    'Same' : ['Denis_Normal','Denis_Normal'], 
+    
+}

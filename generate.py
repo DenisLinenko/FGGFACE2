@@ -2,8 +2,8 @@
 from matplotlib import pyplot
 from PIL import Image
 from numpy import asarray
-from scipy.spatial.distance import cosine
 from mtcnn.mtcnn import MTCNN
+from scipy.spatial.distance import cosine
 from keras_vggface.vggface import VGGFace
 from keras_vggface.utils import preprocess_input
 from time import perf_counter
@@ -44,6 +44,8 @@ def extract_face(filename, required_size=(224, 224)):
 
 	return face_array
 
+	
+
 # extract faces and calculate face embeddings for a list of photo files
 def get_embeddings(filenames):
 	# extract faces
@@ -64,7 +66,7 @@ try:
 	embeddings = get_embeddings([sys.argv[1]])
 	
 	vector = embeddings[0]
-
+	print("---------", vector)
 	# serializing vector to string and saving to file
 
 	memfile = io.BytesIO()
